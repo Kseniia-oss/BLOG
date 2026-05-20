@@ -1,0 +1,24 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Список товарів{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 20px;">
+    <h1>Наші товари</h1>
+    <hr>
+    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+        {% for product in products %}
+            {% if product.is_active %}
+                <div style="border: 1px solid #ccc; padding: 15px; border-radius: 8px; width: 250px; background-color: #f9f9f9;">
+                    <h3>{{ product.name }}</h3>
+                    <p>{{ product.description }}</p>
+                    <p><strong>Ціна:</strong> {{ product.price }} грн</p>
+                    <small style="color: gray;">Додано: {{ product.created_at|date:"d.m.Y" }}</small>
+                </div>
+            {% endif %}
+        {% empty %}
+            <p>Товарів поки немає.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
