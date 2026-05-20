@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.urls import reverse  # Обов'язково імпортуємо reverse для get_absolute_url
+from django.urls import reverse  
 
 class Category(models.Model):
     name = models.CharField(max_length=50, db_index=True, verbose_name="Ім'я категорії")

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Category, Product  # Додали Product до імпорту
+from .models import Post, Category, Product  
 from django.utils.html import format_html
 
 
