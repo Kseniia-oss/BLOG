@@ -1,0 +1,11 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Список статей - Блог{% endblock %}
+
+{% block content %}
+    <h1>Наші статті</h1>
+    {% for post in posts %}
+        <h2>{{ post.title }}</h2>
+        <p>{{ post.content }}</p>
+    {% endfor %}
+{% endblock %}

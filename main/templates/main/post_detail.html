@@ -1,0 +1,22 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ post.title }}</h1>
+    <p><small>Переглядів: {{ post.views }}</small></p>
+    <hr>
+    <div>
+        {{ post.content }}
+    </div>
+    
+    {% if related_posts %}
+        <hr>
+        <h3>Схожі статті:</h3>
+        <ul>
+            {% for r_post in related_posts %}
+                <li>{{ r_post.title }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

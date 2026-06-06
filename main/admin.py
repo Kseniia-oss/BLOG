@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Category, Product  
+from .models import Post, Category, Product
 from django.utils.html import format_html
 
 
@@ -13,7 +13,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class PostAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'author', 'image_tag', 'created_at', 'updated_at')
     prepopulated_fields = {'slug': ('title',)}
-    list_filter = ('created_at', 'updated_at')
+    list_filter = ('created_at', 'updated_at', 'category') # Додав фільтр по категорії для зручності
     search_fields = ('title', 'content')
     ordering = ('-created_at',)
 
@@ -23,7 +23,7 @@ class PostAdmin(admin.ModelAdmin):
                 '<img src="{}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px" />',
                 obj.image.url,
             )
-        return format_html('<span>не має зображення</span>')
+        return format_html('<span>немає зображення</span>') # Виправив орфографію (немає - пишеться разом)
     
     image_tag.short_description = "Image"
 

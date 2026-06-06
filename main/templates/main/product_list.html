@@ -3,22 +3,42 @@
 {% block title %}Список товарів{% endblock %}
 
 {% block content %}
-<div class="container" style="padding: 20px;">
-    <h1>Наші товари</h1>
-    <hr>
-    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-        {% for product in products %}
-            {% if product.is_active %}
-                <div style="border: 1px solid #ccc; padding: 15px; border-radius: 8px; width: 250px; background-color: #f9f9f9;">
-                    <h3>{{ product.name }}</h3>
-                    <p>{{ product.description }}</p>
-                    <p><strong>Ціна:</strong> {{ product.price }} грн</p>
-                    <small style="color: gray;">Додано: {{ product.created_at|date:"d.m.Y" }}</small>
-                </div>
-            {% endif %}
-        {% empty %}
-            <p>Товарів поки немає.</p>
-        {% endfor %}
+<div class="list-header">
+    <div class="posts-title">
+        <span class="title-label">Каталог</span>
+        <h1 class="title-value">Наші товари</h1>
     </div>
+</div>
+
+<div class="posts-grid">
+    {% for product in products %}
+        {% if product.is_active %}
+            <div class="post-card">
+                <div class="card-body">
+                    <h3 class="card-title" style="margin-bottom: 0.5rem;">{{ product.name }}</h3>
+                    <p class="card-excerpt">{{ product.description }}</p>
+                    
+                    <div class="card-meta">
+                        <div class="meta-row" style="margin-bottom: 0;">
+                            <div class="meta-info" style="font-size: 1.1rem; color: var(--primary); font-weight: 800;">
+                                <span class="material-symbols-outlined meta-icon">payments</span>
+                                <span>{{ product.price }} грн</span>
+                            </div>
+                            <div class="meta-info">
+                                <span class="material-symbols-outlined meta-icon">calendar_today</span>
+                                <span>{{ product.created_at|date:"d.m.Y" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% empty %}
+        <div class="no-posts-container">
+            <span class="material-symbols-outlined empty-icon">shopping_bag</span>
+            <h3>Товарів поки немає</h3>
+            <p>Завітайте сюди пізніше, ми вже працюємо над оновленням асортименту.</p>
+        </div>
+    {% endfor %}
 </div>
 {% endblock %}
