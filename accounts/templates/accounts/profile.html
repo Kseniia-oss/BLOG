@@ -1,0 +1,69 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-card">
+        <div class="profile-header">
+            <div class="profile-avatar-wrapper">
+                {% if user.profile.avatar %}
+                    <img src="{{ user.profile.avatar.url }}" alt="Аватар" class="profile-avatar">
+                {% else %}
+                    <div class="profile-avatar-placeholder">
+                        <span class="material-symbols-outlined">account_circle</span>
+                    </div>
+                {% endif %}
+            </div>
+            <h2>{{ user.username }}</h2>
+            <p class="profile-status">
+                {% if user.is_staff %}
+                    <span class="badge badge-admin">Адміністратор</span>
+                {% else %}
+                    <span class="badge badge-user">Користувач</span>
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="profile-details">
+            <h3>Особиста інформація</h3>
+            <div class="detail-row">
+                <span class="detail-label">Email:</span>
+                <span class="detail-value">{{ user.email|default:"Не вказано" }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Місто:</span>
+                <span class="detail-value">{{ user.profile.location|default:"Не вказано" }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Веб-сайт:</span>
+                <span class="detail-value">
+                    {% if user.profile.website %}
+                        <a href="{{ user.profile.website }}" target="_blank">{{ user.profile.website }}</a>
+                    {% else %}
+                        Не вказано
+                    {% endif %}
+                </span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Про себе:</span>
+                <p class="detail-bio">{{ user.profile.bio|default:"Інформація відсутня." }}</p>
+            </div>
+            <hr>
+            <div class="detail-row">
+                <span class="detail-label">Дата реєстрації:</span>
+                <span class="detail-value">{{ user.date_joined|date:"d.m.Y H:i" }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Останній вхід:</span>
+                <span class="detail-value">{{ user.last_login|date:"d.m.Y H:i" }}</span>
+            </div>
+        </div>
+
+        <div class="profile-actions">
+            <a href="{% url 'main:post_list' %}" class="btn-auth">На головну</a>
+            <a href="{% url 'accounts:logout' %}" class="btn-danger">Вийти з акаунту</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
