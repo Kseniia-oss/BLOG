@@ -3,30 +3,95 @@
 {% block title %}Список товарів{% endblock %}
 
 {% block content %}
-<div class="list-header">
+<style>
+    .sorting-panel {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+        background: #f5f5f7;
+        padding: 12px 18px;
+        border-radius: 10px;
+    }
+    .sort-btn {
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        text-decoration: none;
+        color: #333;
+        background: transparent;
+        font-weight: 400;
+        transition: background 0.2s, font-weight 0.2s;
+    }
+    .sort-btn.active {
+        background: #e2e2e7;
+        font-weight: 600;
+    }
+    .product-card-link {
+        text-decoration: none;
+        color: inherit;
+    }
+    .product-title-link {
+        text-decoration: none;
+        color: inherit;
+        transition: color 0.2s;
+    }
+    .product-title-link:hover {
+        color: var(--primary, #007aff);
+    }
+</style>
+
+<div class="list-header" style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2rem;">
     <div class="posts-title">
         <span class="title-label">Каталог</span>
         <h1 class="title-value">Наші товари</h1>
+    </div>
+    
+    <div class="sorting-panel">
+        <span style="font-weight: 600; font-size: 0.9rem; color: #666; margin-right: 5px;">Сортувати:</span>
+        <a href="?sort=new" class="sort-btn {% if current_sort == 'new' %}active{% endif %}">Нові</a>
+        <a href="?sort=old" class="sort-btn {% if current_sort == 'old' %}active{% endif %}">Старі</a>
+        <a href="?sort=popular" class="sort-btn {% if current_sort == 'popular' %}active{% endif %}">Популярні</a>
+        <a href="?sort=price_asc" class="sort-btn {% if current_sort == 'price_asc' %}active{% endif %}">Спочатку дешевші</a>
+        <a href="?sort=price_desc" class="sort-btn {% if current_sort == 'price_desc' %}active{% endif %}">Спочатку дорожчі</a>
     </div>
 </div>
 
 <div class="posts-grid">
     {% for product in products %}
         {% if product.is_active %}
-            <div class="post-card">
-                <div class="card-body">
-                    <h3 class="card-title" style="margin-bottom: 0.5rem;">{{ product.name }}</h3>
-                    <p class="card-excerpt">{{ product.description }}</p>
+            <div class="post-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <a href="{{ product.get_absolute_url }}" class="product-card-link">
+                        <div class="card-image-wrapper" style="height: 200px; background: #f0f0f2; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 8px 8px 0 0;">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                            {% else %}
+                                <span class="material-symbols-outlined" style="font-size: 3.5rem; color: #ccc;">shopping_bag</span>
+                            {% endif %}
+                        </div>
+                    </a>
                     
+                    <div class="card-body" style="padding: 15px;">
+                        <h3 class="card-title" style="margin-bottom: 0.5rem; font-size: 1.25rem;">
+                            <a href="{{ product.get_absolute_url }}" class="product-title-link">
+                                {{ product.name }}
+                            </a>
+                        </h3>
+                        <p class="card-excerpt" style="font-size: 0.9rem; color: #555;">{{ product.description|truncatechars:80 }}</p>
+                    </div>
+                </div>
+                
+                <div class="card-body" style="padding: 0 15px 15px 15px;">
                     <div class="card-meta">
                         <div class="meta-row" style="margin-bottom: 0;">
-                            <div class="meta-info" style="font-size: 1.1rem; color: var(--primary); font-weight: 800;">
+                            <div class="meta-info" style="font-size: 1.1rem; color: var(--primary, #007aff); font-weight: 800;">
                                 <span class="material-symbols-outlined meta-icon">payments</span>
                                 <span>{{ product.price }} грн</span>
                             </div>
-                            <div class="meta-info">
-                                <span class="material-symbols-outlined meta-icon">calendar_today</span>
-                                <span>{{ product.created_at|date:"d.m.Y" }}</span>
+                            <div class="meta-info" style="font-size: 0.85rem; color: #777;">
+                                <span class="material-symbols-outlined meta-icon" style="font-size: 1rem;">visibility</span>
+                                <span>{{ product.views }}</span>
                             </div>
                         </div>
                     </div>
